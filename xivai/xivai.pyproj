@@ -24,7 +24,41 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="action\Ability.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="action\Action.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="action\GCDAction.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AI.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BattleData.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BattleManager.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="config\whm.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DamageTable.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Logger.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="libs.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="xivai.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="action\" />
+    <Folder Include="config\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

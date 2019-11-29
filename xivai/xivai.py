@@ -1,27 +1,47 @@
 ﻿import numpy as np
-import sys
-import os
-import tensorflow as tf
+import libs
+from BattleManager import BattleManager
+from AI import AI
 
-###################################################################
-# Variables                                                       #
-# When launching project or scripts from Visual Studio,           #
-# input_dir and output_dir are passed as arguments automatically. #
-# Users could set them from the project setting page.             #
-###################################################################
+from config import whm
 
-FLAGS = tf.app.flags.FLAGS
-tf.app.flags.DEFINE_string("input_dir", ".", "Input directory where training dataset and meta data are saved")
-tf.app.flags.DEFINE_string("output_dir", ".", "Output directory where output such as logs are saved.")
-tf.app.flags.DEFINE_string("log_dir", ".", "Model directory where final model files are saved.")
+import numpy as np
 
-def main(_):
-    # TODO: add your code here
-    with tf.Session() as sess:
-        welcome = sess.run(tf.constant("Hello, TensorFlow!"))
-        print(welcome)
-    exit(0)
+actions = whm.getWhmActions()
 
+ai = AI(actions, 30)
+ai.training = True
 
-if __name__ == "__main__":
-    tf.app.run()
+bm = BattleManager()
+bm.preInit(2.41, libs.getHealerTable(), actions, ai)
+
+for gen in range(100):
+	fname = "log/whm_" + str(gen) + "th.csv"
+
+	bm.init(fname)
+
+#	for time in range((int)(180/libs.delta)):
+	while bm.totalDmg < 600000:
+		bm.step()
+
+	dps = bm.calcDPS()
+	bm.close()
+
+	print(gen, "th DPS is", dps, "time is", bm.time)
+
+	ai.train(dps)
+	print("statistics", ai.statistics())
+	
+
+print("Learn Finished.")
+
+ai.finish()
+ai.save("log/whm_agent")
+
+bm.init("log/whm_final.csv")
+
+for time in range((int)(600/libs.delta)):
+	bm.step()
+
+print("Finally DPS is ", bm.calcDPS())
+bm.close()
